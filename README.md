@@ -1,6 +1,6 @@
 ### Status Switch Robot（Java）
 
-## Usage 44 Java
+## Usage 4 Java
 ```
 java SwitchStatus.java
 ```
