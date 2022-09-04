@@ -25,15 +25,15 @@ class SwitchStatus{
     public static void main(String[] args) {
         
         GACDStatus status = GACDStatus.Offline;
-        int delayMin = 1;
+        double delayMin = 1;
 
-        System.out.println("*** Please open case console Dashboard in the HP Elitbook monitor with chrome***");
+        System.out.println("\n\n*** Please open case console Dashboard in the HP Elitbook main monitor with chrome and Window scale at 125% ***");
 
         if (args.length > 0){
-            delayMin = Integer.valueOf(args[0]);
+            delayMin = Double.valueOf(args[0]);
         } else {
             Scanner input = new Scanner(System.in);
-            System.out.println("Input the number of Status wanted *[1. Offline] [2. DeepDive]:");
+            System.out.println("Input the number of Status wanted [1. Offline] [2. DeepDive]:");
             int statusNumber = input.nextInt();
             switch (statusNumber){
                 case 1:
@@ -45,49 +45,47 @@ class SwitchStatus{
             }
             
             System.out.println("Input the time delay until action(Minutes):");
-            delayMin = input.nextInt();
+            delayMin = input.nextDouble();
 
             input.close();
         }
 
-        System.out.println("#### Switching command center status to [" + status + "] in [" + String.valueOf(delayMin) + "] min ####");
+        System.out.println("#### Switching GACD status to [" + status + "] in [" + String.valueOf(delayMin) + "] min ####");
 
         try {
-            switchStatus(status, delayMin * 60);
+            switchStatus(status, (int)(delayMin * 60));
         } catch (Exception e){
-            System.out.println("Got AWTException");
+            System.out.println("Got Exception");
         }
 
-        System.out.println("Task finished");
+        System.out.println("*** Task finished ***");
     }
 
     private static void switchStatus(GACDStatus status, int delaySec) throws Exception{
-        //bot.mouseMove(1000, 100);
-
         /*
-        Based on 1080p screen:
-        1500, 660 Offline
-         1500, 700 DeepDive 
+            Based on 1080p screen:
+            1500, 660 Offline
+            1500, 700 DeepDive 
         */ 
-        //System.out.println(String.valueOf(Toolkit.getDefaultToolkit().getScreenResolution()));
         
-        click(1670, 155);
-        click(1600, 255);
+        click(1670, 155); // click arrow
+        click(1600, 255); // Expand status list
         switch (status){
             case Offline:
                 move(1500, 660);
                 delayWithCountDown(delaySec);
                 click(1500, 660);
-
-                //System.out.println(String.valueOf(MouseInfo.getPointerInfo().getLocation().getX()));
                 break;
+
             case DeepDive:
                 move(1500, 700);
                 delayWithCountDown(delaySec);
                 click(1500, 700);
                 break;
             default:
+                System.out.println("!!! Wrong status, can not proceed !!!");
         }
+        click(1670, 155); // fold the pop window
     }
 
     private static void click(int x, int y) throws Exception{
@@ -114,13 +112,13 @@ class SwitchStatus{
         System.out.println("Time remaining(sec): ");
 
         for (int i = delaySec; i >=0; i--) {
-            writer.write("                             \r"); // return to the line start without new line, so override.
-            writer.write(String.valueOf(i));
+            writer.write("\r"); // return to the line start without new line, so override.
+            writer.write(String.valueOf(i) + "                         ");
             writer.flush(); // this is used to push things out from the writer to console.
             bot.delay(1000);
-            
         }
-        writer.write("\n\r");
+        writer.write("\n\n  ");
+        writer.flush();
         //writer.close();
     }
 }
