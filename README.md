@@ -20,4 +20,4 @@ Java (Version >= 11)
 
 Designed for main monitor resolution 1920x1080 and Windows scale for this monitor should be 125%.
 
-The axis for the button may changed due to UI change, please adjust to fit your own laptop
+The coordinate for the button may changed due to UI change, please adjust to fit your own laptop
