@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch SwitchStatus",
+            "request": "launch",
+            "mainClass": "SwitchStatus",
+            "projectName": "java_6efdb9bc"
+        },
+        {
+            "type": "aws-sam",
+            "request": "direct-invoke",
+            "name": "API Fig-Composer-Project:ListItems",
+            "invokeTarget": {
+                "target": "api",
+                "templatePath": "c:\\Users\\bxxiang\\Documents\\Amazon-CSA\\DeploymentTeam\\Training\\Fig-Composer-Project\\template.yaml",
+                "logicalId": "ListItems"
+            },
+            "api": {
+                "path": "/",
+                "httpMethod": "get",
+                "payload": {
+                    "json": {}
+                }
+            }
+        }
+    ]
+}

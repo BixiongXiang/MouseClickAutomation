@@ -11,6 +11,7 @@ import java.awt.event.InputEvent;
 import java.awt.*;
 import java.io.*;
 import java.util.Scanner;
+import java.time.LocalDateTime;    
 
 //import net.sourceforge.argparse4j.ArgumentParsers;
 
@@ -19,11 +20,12 @@ class SwitchStatus{
     static final double screenScaleFactor = 1.25; 
     static enum GACDStatus{
         Offline,
-        DeepDive
+        DeepDive,
+        CustomerMeeting
     };
 
     public static void main(String[] args) {
-        
+
         GACDStatus status = GACDStatus.Offline;
         double delayMin = 1;
 
@@ -33,7 +35,7 @@ class SwitchStatus{
             delayMin = Double.valueOf(args[0]);
         } else {
             Scanner input = new Scanner(System.in);
-            System.out.println("Input the number of Status wanted [1. Offline] [2. DeepDive]:");
+            System.out.println("Input the number of Status wanted [1. Offline] [2. DeepDive] [3. CustomerMeeting]:");
             int statusNumber = input.nextInt();
             switch (statusNumber){
                 case 1:
@@ -41,6 +43,9 @@ class SwitchStatus{
                     break;
                 case 2:
                     status = GACDStatus.DeepDive;
+                    break;
+                case 3:
+                    status = GACDStatus.CustomerMeeting;
                     break;
             }
             
@@ -72,20 +77,28 @@ class SwitchStatus{
         click(1600, 255); // Expand status list
         switch (status){
             case Offline:
-                move(1500, 660);
+                move(1500, 680); // old 670
                 delayWithCountDown(delaySec);
-                click(1500, 660);
+                click(1500, 680);
                 break;
-
             case DeepDive:
-                move(1500, 700);
+                move(1500, 710); // old 690
                 delayWithCountDown(delaySec);
-                click(1500, 700);
+                click(1500, 710);
+                break;
+            case CustomerMeeting:
+                move(1500, 810); // old 690
+                delayWithCountDown(delaySec);
+                click(1500, 810);
                 break;
             default:
                 System.out.println("!!! Wrong status, can not proceed !!!");
         }
         click(1670, 155); // fold the pop window
+
+        // print the time
+        LocalDateTime finishingTime = LocalDateTime.now();
+        System.out.println("Click at time: " + finishingTime);
     }
 
     private static void click(int x, int y) throws Exception{
