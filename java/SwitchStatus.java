@@ -8,9 +8,8 @@
 // import java.awt.Robot;
 // import java.awt.AWTException;
 import java.awt.event.InputEvent;
-import java.awt.*;
+import java.awt.*;  
 import java.io.*;
-import java.util.Scanner;
 import java.time.LocalDateTime;    
 import java.util.*;
 
@@ -22,7 +21,8 @@ class SwitchStatus{
     static enum GACDStatus{
         Offline,
         DeepDive,
-        CustomerMeeting
+        CustomerMeeting,
+        AtLunch
     };
 
     static class Task{
@@ -57,7 +57,7 @@ class SwitchStatus{
             while (addingMoreTask){
                 Task curTask = new Task(GACDStatus.Offline, 1);
 
-                System.out.println("Input the number of Status wanted [1. Offline] [2. DeepDive] [3. CustomerMeeting]:");
+                System.out.println("Input the number of Status wanted [1. Offline] [2. DeepDive] [3. CustomerMeeting] [4. AtLunch]:");
                 int statusNumber = input.nextInt();
                 switch (statusNumber){
                     case 1:
@@ -69,6 +69,12 @@ class SwitchStatus{
                     case 3:
                         curTask.status = GACDStatus.CustomerMeeting;
                         break;
+                    case 4:
+                        curTask.status = GACDStatus.AtLunch;
+                        break;
+                    default:
+                        System.out.println("No available status, set to default status [Offline]");
+                        curTask.status = GACDStatus.Offline;
                 }
                 
                 System.out.println("Input the time delay until action(Minutes):");
@@ -141,9 +147,15 @@ class SwitchStatus{
                 break;
             case CustomerMeeting:
                 int[] CustomerMeetingAxis = {1500, 880};
-                move(CustomerMeetingAxis[0], CustomerMeetingAxis[1]); // old 690
+                move(CustomerMeetingAxis[0], CustomerMeetingAxis[1]); 
                 delayWithCountDown(delaySec);
                 click(CustomerMeetingAxis[0], CustomerMeetingAxis[1]);
+                break;
+            case AtLunch:
+                int[] AtLunchAxis = {1500, 520};
+                move(AtLunchAxis[0], AtLunchAxis[1]); 
+                delayWithCountDown(delaySec);
+                click(AtLunchAxis[0], AtLunchAxis[1]);
                 break;
             default:
                 System.out.println("!!! Wrong status, can not proceed !!!");
