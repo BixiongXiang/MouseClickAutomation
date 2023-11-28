@@ -1,7 +1,12 @@
 ### Status Switch Robot
 
 Switch status based on your choice and time to take action.
-Now supported multi-task to queue up multiple task and switch accordingly
+Now supported multi-task to queue up multiple task and switch accordingly.
+
+workflow:
+- Choose status
+- Add delay time
+- Choose to add more task nor not
 
 ## Usage for Java
 ```
