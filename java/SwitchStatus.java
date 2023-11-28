@@ -8,10 +8,10 @@
 // import java.awt.Robot;
 // import java.awt.AWTException;
 import java.awt.event.InputEvent;
-import java.awt.*;
+import java.awt.*;  
 import java.io.*;
-import java.util.Scanner;
 import java.time.LocalDateTime;    
+import java.util.*;
 
 //import net.sourceforge.argparse4j.ArgumentParsers;
 
@@ -21,49 +21,106 @@ class SwitchStatus{
     static enum GACDStatus{
         Offline,
         DeepDive,
-        CustomerMeeting
+        CustomerMeeting,
+        AtLunch
     };
+
+    static class Task{
+        GACDStatus status;
+        double delayMin;
+        
+        Task(GACDStatus status, double delayMin) {
+            this.status = status;
+            this.delayMin = delayMin;
+        }
+    }
 
     public static void main(String[] args) {
 
         GACDStatus status = GACDStatus.Offline;
         double delayMin = 1;
 
+        Queue<Task> taskQueue = new ArrayDeque<>();
+
         System.out.println("\n\n*** Please open case console Dashboard in the HP Elitbook main monitor with chrome and Window scale at 125% ***");
 
         if (args.length > 0){
             delayMin = Double.valueOf(args[0]);
         } else {
-            Scanner input = new Scanner(System.in);
-            System.out.println("Input the number of Status wanted [1. Offline] [2. DeepDive] [3. CustomerMeeting]:");
-            int statusNumber = input.nextInt();
-            switch (statusNumber){
-                case 1:
-                    status = GACDStatus.Offline;
-                    break;
-                case 2:
-                    status = GACDStatus.DeepDive;
-                    break;
-                case 3:
-                    status = GACDStatus.CustomerMeeting;
-                    break;
-            }
             
-            System.out.println("Input the time delay until action(Minutes):");
-            delayMin = input.nextDouble();
+            Scanner input = new Scanner(System.in);
+            long accumulateWaitTime = 0;
+
+            //Getting the status to switch to and put in a task queue.
+            Boolean addingMoreTask = true;
+
+            while (addingMoreTask){
+                Task curTask = new Task(GACDStatus.Offline, 1);
+
+                System.out.println("Input the number of Status wanted [1. Offline] [2. DeepDive] [3. CustomerMeeting] [4. AtLunch]:");
+                int statusNumber = input.nextInt();
+                switch (statusNumber){
+                    case 1:
+                        curTask.status = GACDStatus.Offline;
+                        break;
+                    case 2:
+                        curTask.status = GACDStatus.DeepDive;
+                        break;
+                    case 3:
+                        curTask.status = GACDStatus.CustomerMeeting;
+                        break;
+                    case 4:
+                        curTask.status = GACDStatus.AtLunch;
+                        break;
+                    default:
+                        System.out.println("No available status, set to default status [Offline]");
+                        curTask.status = GACDStatus.Offline;
+                }
+                
+                System.out.println("Input the time delay until action(Minutes):");
+                curTask.delayMin = input.nextDouble();
+
+                taskQueue.offer(curTask);
+
+                accumulateWaitTime += (long)curTask.delayMin;
+                LocalDateTime expectedTaskActionTime = LocalDateTime.now();
+                System.out.println("Task added, switch to [" + curTask.status + "] in [" + String.valueOf(curTask.delayMin) + "] min expecting at [" + expectedTaskActionTime.plusMinutes(accumulateWaitTime) + "]");
+
+                // Get choice to continue add task or not
+                char addMoreTaskChoice = '?';
+
+                while (addMoreTaskChoice != 'y' && addMoreTaskChoice != 'n'){
+                    System.out.println("Do you want to add more tasks? (y/n): ");
+                    addMoreTaskChoice = input.next().charAt(0);
+                }
+
+                addingMoreTask = addMoreTaskChoice == 'y' ? true : false;
+                System.out.println("======================================================================");
+            }
 
             input.close();
         }
 
-        System.out.println("#### Switching GACD status to [" + status + "] in [" + String.valueOf(delayMin) + "] min ####");
+        //executing the tasks
+        while (!taskQueue.isEmpty()){
 
-        try {
-            switchStatus(status, (int)(delayMin * 60));
-        } catch (Exception e){
-            System.out.println("Got Exception");
+            Task curTask = taskQueue.poll();
+
+            System.out.println("======================================================================");
+            System.out.println("\n\n*** Task Start ***\n");
+            LocalDateTime taskActionTime = LocalDateTime.now();
+            System.out.println("#### Switching GACD status to [" + curTask.status + "] in [" + String.valueOf(curTask.delayMin) + "] min expecting at [" + taskActionTime.plusMinutes((long)curTask.delayMin) + "] ####");
+
+            try {
+                switchStatus(curTask.status, (int)(curTask.delayMin * 60));
+            } catch (Exception e){
+                System.out.println("Got Exception");
+            }
+
+            System.out.println("*** Task finished ***");
         }
 
-        System.out.println("*** Task finished ***");
+        System.out.println("*** Queue empty all tasks finished ***");
     }
 
     private static void switchStatus(GACDStatus status, int delaySec) throws Exception{
@@ -77,19 +134,28 @@ class SwitchStatus{
         click(1600, 255); // Expand status list
         switch (status){
             case Offline:
-                move(1500, 680); // old 670
+                int[] OfflineAxis = {1500, 730};
+                move(OfflineAxis[0], OfflineAxis[1]); // old 670
                 delayWithCountDown(delaySec);
-                click(1500, 680);
+                click(OfflineAxis[0], OfflineAxis[1]);
                 break;
             case DeepDive:
-                move(1500, 710); // old 690
+                int[] DeepDiveAxis = {1500, 770};
+                move(DeepDiveAxis[0], DeepDiveAxis[1]); // old 690
                 delayWithCountDown(delaySec);
-                click(1500, 710);
+                click(DeepDiveAxis[0], DeepDiveAxis[1]);
                 break;
             case CustomerMeeting:
-                move(1500, 810); // old 690
+                int[] CustomerMeetingAxis = {1500, 880};
+                move(CustomerMeetingAxis[0], CustomerMeetingAxis[1]); 
                 delayWithCountDown(delaySec);
-                click(1500, 810);
+                click(CustomerMeetingAxis[0], CustomerMeetingAxis[1]);
+                break;
+            case AtLunch:
+                int[] AtLunchAxis = {1500, 520};
+                move(AtLunchAxis[0], AtLunchAxis[1]); 
+                delayWithCountDown(delaySec);
+                click(AtLunchAxis[0], AtLunchAxis[1]);
                 break;
             default:
                 System.out.println("!!! Wrong status, can not proceed !!!");

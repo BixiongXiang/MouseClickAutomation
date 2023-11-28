@@ -1,5 +1,8 @@
 ### Status Switch Robot
 
+Switch status based on your choice and time to take action.
+Now supported multi-task to queue up multiple task and switch accordingly
+
 ## Usage for Java
 ```
 java SwitchStatus.java
