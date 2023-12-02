@@ -16,8 +16,8 @@ import java.util.*;
 //import net.sourceforge.argparse4j.ArgumentParsers;
 
 class SwitchStatus{
-    //Please check your monitor scaling by checking the windows monitor scale. 125% == 1.25
-    static final double screenScaleFactor = 1.25; 
+    //Please check your monitor scaling by checking the Windows monitor scale. Now using 100%=1.0
+    static final double screenScaleFactor = 1.0; 
     static enum GACDStatus{
         Offline,
         DeepDive,
@@ -130,29 +130,29 @@ class SwitchStatus{
             1500, 700 DeepDive 
         */ 
         
-        click(1670, 155); // click arrow
-        click(1600, 255); // Expand status list
+        click(1400, 128); // click arrow
+        click(1300, 210); // Expand status list
         switch (status){
             case Offline:
-                int[] OfflineAxis = {1500, 730};
+                int[] OfflineAxis = {1300, 590};
                 move(OfflineAxis[0], OfflineAxis[1]); // old 670
                 delayWithCountDown(delaySec);
                 click(OfflineAxis[0], OfflineAxis[1]);
                 break;
             case DeepDive:
-                int[] DeepDiveAxis = {1500, 770};
+                int[] DeepDiveAxis = {1300, 620};
                 move(DeepDiveAxis[0], DeepDiveAxis[1]); // old 690
                 delayWithCountDown(delaySec);
                 click(DeepDiveAxis[0], DeepDiveAxis[1]);
                 break;
             case CustomerMeeting:
-                int[] CustomerMeetingAxis = {1500, 880};
+                int[] CustomerMeetingAxis = {1300, 710};
                 move(CustomerMeetingAxis[0], CustomerMeetingAxis[1]); 
                 delayWithCountDown(delaySec);
                 click(CustomerMeetingAxis[0], CustomerMeetingAxis[1]);
                 break;
             case AtLunch:
-                int[] AtLunchAxis = {1500, 520};
+                int[] AtLunchAxis = {1300, 420};
                 move(AtLunchAxis[0], AtLunchAxis[1]); 
                 delayWithCountDown(delaySec);
                 click(AtLunchAxis[0], AtLunchAxis[1]);
@@ -160,7 +160,7 @@ class SwitchStatus{
             default:
                 System.out.println("!!! Wrong status, can not proceed !!!");
         }
-        click(1670, 155); // fold the pop window
+        click(1400, 128); // fold the pop window
 
         // print the time
         LocalDateTime finishingTime = LocalDateTime.now();
