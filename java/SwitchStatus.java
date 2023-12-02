@@ -42,7 +42,7 @@ class SwitchStatus{
 
         Queue<Task> taskQueue = new ArrayDeque<>();
 
-        System.out.println("\n\n*** Please open case console Dashboard in the HP Elitbook main monitor 1080p with chrome and Windows scale at 125% ***");
+        System.out.println("\n\n*** Please open case console Dashboard in the HP Elitbook main monitor 900p with chrome and Windows scale at 100% ***");
 
         if (args.length > 0){
             delayMin = Double.valueOf(args[0]);
