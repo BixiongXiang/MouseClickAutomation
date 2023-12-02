@@ -26,7 +26,7 @@ java SwitchStatus
 ## Requirement
 Java (Version >= 11)
 
-Designed for main monitor resolution 1920x1080 and Windows scale for this monitor should be 125%.
+Designed for main monitor resolution 1600x900 and Windows scale for this monitor should be 100%.
 
 For Mac, please set this scale based on your monitor's physical resolution and logical resolution(can find in setting)
 ratio = physical resolution / logical resolution
