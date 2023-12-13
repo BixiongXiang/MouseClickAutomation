@@ -5,15 +5,11 @@
  * java SwitchStatus.java 2
 */
 
-// import java.awt.Robot;
-// import java.awt.AWTException;
+import java.util.*;
+import java.awt.*;                //main package used: import java.awt.Robot; import java.awt.AWTException;
 import java.awt.event.InputEvent;
-import java.awt.*;  
 import java.io.*;
 import java.time.LocalDateTime;    
-import java.util.*;
-
-//import net.sourceforge.argparse4j.ArgumentParsers;
 
 class SwitchStatus{
     //Please check your monitor scaling by checking the Windows monitor scale. Now using 100%=1.0
@@ -45,6 +41,7 @@ class SwitchStatus{
         System.out.println("\n\n*** Please open case console Dashboard in the HP Elitbook main monitor 900p with chrome and Windows scale at 100% ***");
 
         if (args.length > 0){
+            System.out.println("Command line imput not suppoted yet");
             delayMin = Double.valueOf(args[0]);
         } else {
             
@@ -130,29 +127,29 @@ class SwitchStatus{
             1500, 700 DeepDive 
         */ 
         
-        click(1400, 128); // click arrow
-        click(1300, 210); // Expand status list
+        click(1403, 140); // click arrow
+        click(1300, 222); // Expand status list
         switch (status){
             case Offline:
-                int[] OfflineAxis = {1300, 590};
+                int[] OfflineAxis = {1300, 602};
                 move(OfflineAxis[0], OfflineAxis[1]); // old 670
                 delayWithCountDown(delaySec);
                 click(OfflineAxis[0], OfflineAxis[1]);
                 break;
             case DeepDive:
-                int[] DeepDiveAxis = {1300, 620};
+                int[] DeepDiveAxis = {1300, 632};
                 move(DeepDiveAxis[0], DeepDiveAxis[1]); // old 690
                 delayWithCountDown(delaySec);
                 click(DeepDiveAxis[0], DeepDiveAxis[1]);
                 break;
             case CustomerMeeting:
-                int[] CustomerMeetingAxis = {1300, 710};
+                int[] CustomerMeetingAxis = {1300, 722};
                 move(CustomerMeetingAxis[0], CustomerMeetingAxis[1]); 
                 delayWithCountDown(delaySec);
                 click(CustomerMeetingAxis[0], CustomerMeetingAxis[1]);
                 break;
             case AtLunch:
-                int[] AtLunchAxis = {1300, 420};
+                int[] AtLunchAxis = {1300, 432};
                 move(AtLunchAxis[0], AtLunchAxis[1]); 
                 delayWithCountDown(delaySec);
                 click(AtLunchAxis[0], AtLunchAxis[1]);
@@ -160,7 +157,7 @@ class SwitchStatus{
             default:
                 System.out.println("!!! Wrong status, can not proceed !!!");
         }
-        click(1400, 128); // fold the pop window
+        click(1400, 140); // fold the pop window
 
         // print the time
         LocalDateTime finishingTime = LocalDateTime.now();
